@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import AnimeTable from '../components/AnimeTable';
 import Pagination from '../components/Pagination';
 import FilterPanel from '../components/FilterPanel';
 import { Animes, fetchAnimes } from '../utils/api';
+import "../global.css";
 
 const MainPage: React.FC = () => {
     const [ data, setData ] = useState<Animes[]>([]);
@@ -57,7 +58,7 @@ const MainPage: React.FC = () => {
     const hasNext = filteredData.length > 0;
 
     return (
-        <View style={styles.container}>
+        <View className='flex-1 bg-white p-4 '>
             <FilterPanel
                 startYear={ startYear }
                 setStartYear={ setStartYear }
@@ -83,13 +84,5 @@ const MainPage: React.FC = () => {
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: '#f5f5f5',
-    },
-});
 
 export default MainPage;

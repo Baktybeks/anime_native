@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+
 interface FilterPanelProps {
     startYear: string;
     setStartYear: (value: string) => void;
@@ -12,33 +13,33 @@ interface FilterPanelProps {
 }
 
 const FilterPanel: React.FC<FilterPanelProps> = ({
-                                                     startYear,
-                                                     setStartYear,
-                                                     endYear,
-                                                     setEndYear,
-                                                     categories,
-                                                     selectedCategories,
-                                                     setSelectedCategories,
-                                                 }) => {
+    startYear,
+    setStartYear,
+    endYear,
+    setEndYear,
+    categories,
+    selectedCategories,
+    setSelectedCategories,
+}) => {
     return (
-        <View style={styles.filters}>
+        <View className="mb-4">
             <TextInput
-                style={styles.input}
+                className="h-12 border border-gray-300 rounded px-2 mb-2"
                 placeholder="From Year"
                 keyboardType="numeric"
                 value={startYear}
                 onChangeText={setStartYear}
             />
             <TextInput
-                style={styles.input}
+                className="h-12 border border-gray-300 rounded px-2 mb-2"
                 placeholder="To Year"
                 keyboardType="numeric"
                 value={endYear}
                 onChangeText={setEndYear}
             />
-            <Picker<string>
+            <Picker
                 selectedValue={selectedCategories[0] || ''}
-                style={styles.picker}
+                className="h-12 mb-2"
                 onValueChange={(value: string) => {
                     if (value && !selectedCategories.includes(value)) {
                         setSelectedCategories([...selectedCategories, value]);
@@ -50,9 +51,12 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                     <Picker.Item key={category} label={category} value={category} />
                 ))}
             </Picker>
-            <View style={styles.selectedCategories}>
+            <View className="flex-row flex-wrap">
                 {selectedCategories.map((category) => (
-                    <Text key={category} style={styles.category}>
+                    <Text
+                        key={category}
+                        className="bg-gray-200 rounded px-2 py-1 text-xs mr-2 mb-2"
+                    >
                         {category}
                     </Text>
                 ))}
@@ -68,34 +72,5 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    filters: {
-        marginBottom: 16,
-    },
-    input: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 8,
-        paddingHorizontal: 8,
-        marginBottom: 8,
-    },
-    picker: {
-        height: 50,
-        marginBottom: 8,
-    },
-    selectedCategories: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-    category: {
-        backgroundColor: '#e0e0e0',
-        borderRadius: 4,
-        padding: 4,
-        fontSize: 12,
-        marginRight: 4,
-    },
-});
 
 export default FilterPanel;

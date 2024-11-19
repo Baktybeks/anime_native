@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     Image,
     ActivityIndicator,
     ScrollView,
@@ -10,16 +9,17 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Anime, fetchAnime } from '../../utils/api';
+import { Anime, fetchAnime } from '@/utils/api';
+
 
 const DescriptionScreen: React.FC = () => {
     const router = useRouter();
-    const { mal_id } = useLocalSearchParams<{ mal_id: string }>();
-    const [data, setData] = useState<Anime | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { mal_id } = useLocalSearchParams<{mal_id: string}>();
+    const [ data, setData ] = useState<Anime | null>(null);
+    const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     useEffect(() => {
-        const getData = async () => {
+        const getData = async() => {
             if (mal_id) {
                 setIsLoading(true);
                 const animeData = await fetchAnime(mal_id);
@@ -28,136 +28,69 @@ const DescriptionScreen: React.FC = () => {
             }
         };
         getData();
-    }, [mal_id]);
+    }, [ mal_id ]);
+
 
     if (isLoading) {
-        return <ActivityIndicator size="large" color="#0000ff" style={styles.loader} />;
+        return (
+            <View className="flex-1 justify-center items-center">
+                <ActivityIndicator size="large" color="#0000ff"/>
+            </View>
+        );
     }
 
     if (!data) {
         return (
-            <View style={styles.container}>
-                <Text style={styles.errorText}>
+            <View className="flex-1 justify-center items-center bg-white p-4">
+                <Text className="text-center text-red-500 text-lg">
                     No data available. Please try again later.
                 </Text>
-                <Button title="Назад" onPress={() => router.back()} />
+                <Button title="Назад" onPress={() => router.back()}/>
             </View>
         );
     }
 
     return (
-        <ScrollView style={styles.container}>
-            <Image source={{ uri: data.images.jpg.large_image_url }} style={styles.image} />
-            <View style={styles.cardContent}>
-                <Text style={styles.animeTitle}>{data.title || 'Unknown Title'}</Text>
-                <Text style={styles.rating}>
+        <ScrollView className="flex-1 bg-gray-100 p-4">
+            <Image
+                source={{ uri: data.images.jpg.large_image_url }}
+                className="w-full h-72 rounded-lg mb-4"
+            />
+            <View className="p-4 rounded-lg">
+                <Text className="text-2xl font-bold mb-2">
+                    {data.title || 'Unknown Title'}
+                </Text>
+                <Text className="text-base text-gray-600 mb-1">
                     ⭐ {data.score || 'N/A'} ({data.scored_by || 0} users)
                 </Text>
-                <Text style={styles.rank}>#{data.rank || 'N/A'} Ranking</Text>
-                <Text style={styles.episodes}>
+                <Text className="text-sm text-gray-500 mb-1">
+                    #{data.rank || 'N/A'} Ranking
+                </Text>
+                <Text className="text-sm text-gray-600 mb-3">
                     {data.type || 'Unknown Type'} • {data.episodes || '?'} episodes
                 </Text>
-                <Text style={styles.synopsis}>{data.synopsis || 'No synopsis available.'}</Text>
-                <View style={styles.genres}>
+                <Text className="text-sm text-gray-700 mb-3">
+                    {data.synopsis || 'No synopsis available.'}
+                </Text>
+                <View className="flex-row flex-wrap">
                     {data.genres?.map((genre, index) => (
-                        <Text key={index} style={styles.genre}>
+                        <Text
+                            key={index}
+                            className="bg-gray-200 rounded px-3 py-1 text-xs mr-2 mb-2"
+                        >
                             {genre.name}
                         </Text>
                     ))}
                 </View>
             </View>
-            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-                <Text style={styles.backButtonText}>Назад</Text>
+            <TouchableOpacity
+                className="absolute top-4 left-4 bg-blue-500 px-4 py-2 rounded-lg"
+                onPress={() => router.back()}
+            >
+                <Text className="text-white font-bold text-lg">Назад</Text>
             </TouchableOpacity>
         </ScrollView>
     );
 };
 
 export default DescriptionScreen;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: '#f5f5f5',
-    },
-    loader: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    errorText: {
-        textAlign: 'center',
-        color: '#ff0000',
-        fontSize: 16,
-    },
-    image: {
-        width: '100%',
-        height: 300,
-        resizeMode: 'cover',
-        borderRadius: 8,
-        marginBottom: 16,
-    },
-    cardContent: {
-        padding: 12,
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        shadowColor: '#000',
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 3,
-    },
-    animeTitle: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        marginBottom: 8,
-    },
-    rating: {
-        fontSize: 16,
-        color: '#555',
-        marginBottom: 4,
-    },
-    rank: {
-        fontSize: 14,
-        color: '#888',
-        marginBottom: 4,
-    },
-    episodes: {
-        fontSize: 14,
-        color: '#555',
-        marginBottom: 12,
-    },
-    synopsis: {
-        fontSize: 14,
-        color: '#444',
-        marginBottom: 12,
-        lineHeight: 20,
-    },
-    genres: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-    },
-    genre: {
-        backgroundColor: '#e0e0e0',
-        borderRadius: 4,
-        padding: 6,
-        fontSize: 12,
-        marginRight: 8,
-        marginBottom: 8,
-    },
-    backButton: {
-        position: 'absolute',
-        top: 16,
-        left: 16,
-        backgroundColor: '#007BFF',
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-        borderRadius: 8,
-        zIndex: 10,
-    },
-    backButtonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-});
