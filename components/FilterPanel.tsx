@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
+
 interface FilterPanelProps {
     startYear: string;
     setStartYear: (value: string) => void;
@@ -12,7 +13,8 @@ interface FilterPanelProps {
     setSelectedCategories: (categories: string[]) => void;
 }
 
-const FilterPanel: React.FC<FilterPanelProps> = ({
+
+function FilterPanel({
     startYear,
     setStartYear,
     endYear,
@@ -20,7 +22,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
     categories,
     selectedCategories,
     setSelectedCategories,
-}) => {
+}: FilterPanelProps) {
     return (
         <View className="mb-4">
             <TextInput
@@ -38,17 +40,17 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                 onChangeText={setEndYear}
             />
             <Picker
-                selectedValue={selectedCategories[0] || ''}
+                selectedValue={selectedCategories[ 0 ] || ''}
                 className="h-12 mb-2"
                 onValueChange={(value: string) => {
                     if (value && !selectedCategories.includes(value)) {
-                        setSelectedCategories([...selectedCategories, value]);
+                        setSelectedCategories([ ...selectedCategories, value ]);
                     }
                 }}
             >
-                <Picker.Item label="Select Category" value="" />
+                <Picker.Item label="Select Category" value=""/>
                 {categories.map((category) => (
-                    <Picker.Item key={category} label={category} value={category} />
+                    <Picker.Item key={category} label={category} value={category}/>
                 ))}
             </Picker>
             <View className="flex-row flex-wrap">

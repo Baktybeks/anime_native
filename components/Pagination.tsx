@@ -7,8 +7,7 @@ interface PaginationProps {
     hasPrevious: boolean;
     hasNext: boolean;
 }
-
-const Pagination: React.FC<PaginationProps> = ({ page, setPage, hasPrevious, hasNext }) => {
+function Pagination({ page, setPage, hasPrevious, hasNext }: PaginationProps) {
     return (
         <View className="flex-row justify-between mt-4">
             <Button

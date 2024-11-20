@@ -31,16 +31,18 @@ interface AnimeTableProps {
     selectedCategories: string[];
 }
 
-const AnimeTable: React.FC<AnimeTableProps> = ({
+
+function AnimeTable({
     data,
     isLoading,
     startYear,
     endYear,
     selectedCategories,
-}) => {
+}: AnimeTableProps) {
     const [ sortField, setSortField ] = useState<keyof Anime>('title');
     const [ sortDirection, setSortDirection ] = useState<'asc' | 'desc'>('asc');
     const filteredData = useMemo(() => {
+        if (!Array.isArray(data)) return [];
         return data.filter((item) => {
             const matchesCategories =
                 selectedCategories.length === 0 ||
@@ -52,7 +54,7 @@ const AnimeTable: React.FC<AnimeTableProps> = ({
 
             return matchesCategories && matchesYear;
         });
-    }, [ data, selectedCategories, startYear, endYear ]);
+    }, [data, selectedCategories, startYear, endYear]);
     const sortedData = useMemo(() => {
         return [ ...filteredData ].sort((a, b) => {
             const valueA = a[ sortField ] || '';

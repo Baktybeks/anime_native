@@ -12,7 +12,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Anime, fetchAnime } from '@/utils/api';
 
 
-const DescriptionScreen: React.FC = () => {
+function DescriptionScreen() {
     const router = useRouter();
     const { mal_id } = useLocalSearchParams<{mal_id: string}>();
     const [ data, setData ] = useState<Anime | null>(null);

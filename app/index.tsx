@@ -4,9 +4,10 @@ import AnimeTable from '../components/AnimeTable';
 import Pagination from '../components/Pagination';
 import FilterPanel from '../components/FilterPanel';
 import { Animes, fetchAnimes } from '../utils/api';
-import "../global.css";
+import '../global.css';
 
-const MainPage: React.FC = () => {
+
+function MainPage() {
     const [ data, setData ] = useState<Animes[]>([]);
     const [ filteredData, setFilteredData ] = useState<Animes[]>([]);
     const [ page, setPage ] = useState<number>(1);
@@ -58,28 +59,28 @@ const MainPage: React.FC = () => {
     const hasNext = filteredData.length > 0;
 
     return (
-        <View className='flex-1 bg-white p-4 '>
+        <View className="flex-1 bg-white p-4 ">
             <FilterPanel
-                startYear={ startYear }
-                setStartYear={ setStartYear }
-                endYear={ endYear }
-                setEndYear={ setEndYear }
-                categories={ categories }
-                selectedCategories={ selectedCategories }
-                setSelectedCategories={ setSelectedCategories }
+                startYear={startYear}
+                setStartYear={setStartYear}
+                endYear={endYear}
+                setEndYear={setEndYear}
+                categories={categories}
+                selectedCategories={selectedCategories}
+                setSelectedCategories={setSelectedCategories}
             />
             <AnimeTable
-                data={ data }
-                isLoading={ isLoading }
-                startYear={ startYear }
-                endYear={ endYear }
-                selectedCategories={ selectedCategories }
+                data={data}
+                isLoading={isLoading}
+                startYear={startYear}
+                endYear={endYear}
+                selectedCategories={selectedCategories}
             />
             <Pagination
-                page={ page }
-                setPage={ setPage }
-                hasPrevious={ hasPrevious }
-                hasNext={ hasNext }
+                page={page}
+                setPage={setPage}
+                hasPrevious={hasPrevious}
+                hasNext={hasNext}
             />
         </View>
     );
